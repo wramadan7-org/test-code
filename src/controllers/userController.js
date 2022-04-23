@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
-const userModel = require('../models/User');
+
 const ApiError = require('../utils/ApiError');
+const bcrypt = require('../utils/hashing');
 
 const userService = require('../services/userService');
 
@@ -8,9 +9,16 @@ const createUser = async (req, res) => {
   try {
     const userBody = req.body;
 
-    const user = await userService.createUser(userBody);
+    const hash = bcrypt(userBody.password, 10);
 
-    // if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'Fail to create data');
+    const data = {
+      ...userBody,
+      password: hash,
+    };
+
+    const user = await userService.createUser(data);
+
+    if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'Fail to create data');
 
     res.sendWrapped(user, httpStatus.OK);
   } catch (error) {

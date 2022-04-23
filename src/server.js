@@ -11,10 +11,11 @@ const routeV1 = require('./routes/index');
 const app = express();
 
 const {
+  MONGODB,
   PORT,
 } = process.env;
 
-mongoose.connect('mongodb+srv://wramadan:g7bebSiSWyIZtaP6@cluster0.wbnuo.mongodb.net/test-code?authSource=MONGODB&authMechanism=SCRAM-SHA-1', {
+mongoose.connect(`${MONGODB}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }, (error, db) => {

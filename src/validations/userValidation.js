@@ -7,7 +7,8 @@ const createUser = {
       lastName: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(3).required(),
-      phoneNumber: Joi.string().max(14).pattern(/^\d+$/).required(),
+      phoneNumber: Joi.string().min(12).max(14).pattern(/^\d+$/)
+        .required(),
       detail: Joi.object().keys(
         {
           address: Joi.string(),

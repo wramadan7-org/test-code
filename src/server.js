@@ -8,6 +8,10 @@ const routeV1 = require('./routes/index');
 
 const app = express();
 
+const {
+  PORT,
+} = process.env;
+
 mongoose.connect('mongodb+srv://wramadan:g7bebSiSWyIZtaP6@cluster0.wbnuo.mongodb.net/test-code?authSource=MONGODB&authMechanism=SCRAM-SHA-1', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -16,8 +20,8 @@ mongoose.connect('mongodb+srv://wramadan:g7bebSiSWyIZtaP6@cluster0.wbnuo.mongodb
     logger.info(`Connecting to database error: ${error.message}`);
     throw error;
   }
-  app.listen(3000, () => {
-    logger.info('App working on 3000');
+  app.listen(PORT, () => {
+    logger.info(`App working on ${PORT}`);
   });
   // db.close();
 });

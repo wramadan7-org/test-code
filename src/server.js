@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
+const { required } = require('joi');
 const logger = require('./config/logger');
 const routeV1 = require('./routes/index');
 

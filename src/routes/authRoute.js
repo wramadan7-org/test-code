@@ -11,5 +11,6 @@ const userValidate = require('../validations/userValidation');
 const authController = require('../controllers/userController');
 
 router.post('/', auth, user, validate(userValidate.createUser), authController.createUser);
+// router.post('/login', )
 
 module.exports = router;

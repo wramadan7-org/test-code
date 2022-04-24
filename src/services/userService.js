@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const httpStatus = require('http-status');
 
 const ApiError = require('../utils/ApiError');
-const compare = require('../utils/compare');
 
 const User = require('../models/User');
 

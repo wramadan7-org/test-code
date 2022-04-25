@@ -2,7 +2,7 @@ require('dotenv').config();
 const httpStatus = require('http-status');
 const jwt = require('jsonwebtoken');
 
-const { SECRET_JWT } = process.env;
+const { SECRET_KEY } = process.env;
 
 module.exports = async (req, res, next) => {
   try {
@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
     if (authorization && authorization.startsWith('Bearer ')) {
       const token = authorization.slice(7, authorization.length);
 
-      jwt.verify(token, SECRET_JWT, (error, user) => {
+      jwt.verify(token, SECRET_KEY, (error, user) => {
         if (error) {
           res.sendWrapped('Token not verified.', httpStatus.BAD_REQUEST);
         }

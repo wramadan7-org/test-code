@@ -57,7 +57,7 @@ const getManyUserByQuery = async (query) => {
 const updateUser = async (id, userBody) => {
   const user = await getOneUserByQuery({ _id: id });
 
-  if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  if (!user) return null;
 
   Object.assign(user, userBody);
   user.save();
@@ -73,7 +73,7 @@ const updateUser = async (id, userBody) => {
 const deleteUserById = async (id) => {
   const user = await getOneUserByQuery({ _id: id });
 
-  if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found.');
+  if (!user) return null;
 
   user.remove();
 

@@ -62,8 +62,78 @@ const getAccountById = async (req, res) => {
   res.sendWrapped(user, httpStatus.OK);
 };
 
+const updateAccountById = async (req, res) => {
+  const { id } = req.params;
+  let userBody = req.body;
+
+  const user = await userService.getOneUserByQuery({ _id: id });
+
+  if (!user) return res.sendWrapped('User no\t found.', httpStatus.NOT_FOUND);
+
+  let defaultEmail = user.email;
+  let defaultPhoneNumber = user.phoneNumber;
+
+  // Check duplicate email
+  if (userBody.email) {
+    const availEmail = await userService.getManyUserByQuery(
+      {
+        $and: [
+          {
+            email: userBody.email,
+          },
+          {
+            email: {
+              $ne: user.email,
+            },
+          },
+        ],
+      },
+    );
+
+    if (availEmail && availEmail.length > 0) return res.sendWrapped('Email already exists.', httpStatus.CONFLICT);
+
+    defaultEmail = userBody.email;
+  }
+
+  // Check duplicate phone number
+  if (userBody.phoneNumber) {
+    const availPhoneNumber = await userService.getManyUserByQuery(
+      {
+        $and: [
+          {
+            phoneNumber: userBody.phoneNumber,
+          },
+          {
+            phoneNumber: {
+              $ne: user.phoneNumber,
+            },
+          },
+        ],
+      },
+    );
+
+    if (availPhoneNumber && availPhoneNumber.length > 0) return res.sendWrapped('Phone number already exists.', httpStatus.CONFLICT);
+
+    defaultPhoneNumber = userBody.phoneNumber;
+  }
+
+  let tempData = {
+    phoneNumber: defaultPhoneNumber,
+    email: defaultEmail,
+  };
+
+  Object.assign(userBody, tempData);
+
+  Object.assign(user, userBody);
+
+  const updateAccount = await userService.updateUser(id, userBody);
+
+  res.sendWrapped(updateAccount, httpStatus.OK);
+};
+
 module.exports = {
   createAccount,
   getAllAccount,
   getAccountById,
+  updateAccountById,
 };

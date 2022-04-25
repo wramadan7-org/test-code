@@ -19,7 +19,14 @@ const login = async (req, res) => {
 
     if (!checkPassword) return res.sendWrapped('Wrong password', httpStatus.NOT_FOUND);
 
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.detail.role }, process.env.SECRET_KEY, { expiresIn: '1d' });
+    const payload = {
+      id: user.id,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.detail.role,
+    };
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1d' });
 
     const data = {
       token,

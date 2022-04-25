@@ -1,6 +1,5 @@
 const httpStatus = require('http-status');
 
-const ApiError = require('../utils/ApiError');
 const bcrypt = require('../utils/hashing');
 
 const userService = require('../services/userService');

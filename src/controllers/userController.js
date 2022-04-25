@@ -28,10 +28,11 @@ const createAccount = async (req, res) => {
 const getOwnAccount = async (req, res) => {
   try {
     const { id } = req.user;
-    const users = await userService.getOneUserByQuery({ _id: id });
-    console.log(req.user);
+    const user = await userService.getOneUserByQuery({ _id: id });
 
-    res.sendWrapped(users, httpStatus.OK);
+    if (!user) return res.sendWrapped('You don\'t have account', httpStatus.NOT_FOUND);
+
+    res.sendWrapped(user, httpStatus.OK);
   } catch (error) {
     res.sendWrapped(error.message, httpStatus.BAD_GATEWAY);
   }
@@ -43,6 +44,10 @@ const updateOwnAccount = async (req, res) => {
 
   let defaultEmail = email;
   let defaultPhoneNumber = phoneNumber;
+
+  const checkUser = await userService.getOneUserByQuery({ _id: id });
+
+  if (!checkUser) return res.sendWrapped('You don\'t have account', httpStatus.NOT_FOUND);
 
   // Check duplicate email
   if (userBody.email) {
@@ -105,7 +110,11 @@ const updateOwnAccount = async (req, res) => {
 const deleteOwnAccount = async (req, res) => {
   const { id } = req.user;
 
-  const user = await userService.deleteUserById({ id });
+  const checkUser = await userService.getOneUserByQuery({ _id: id });
+
+  if (!checkUser) return res.sendWrapped('You don\'t have account', httpStatus.NOT_FOUND);
+
+  const user = await userService.deleteUserById(id);
 
   if (!user) return res.sendWrapped('Fail to delete account', httpStatus.BAD_GATEWAY);
 

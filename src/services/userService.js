@@ -55,7 +55,7 @@ const getManyUserByQuery = async (query) => {
  * @returns { Promise <Object> }
  */
 const updateUser = async (id, userBody) => {
-  const user = await getOneUserByQuery({ '_id.$oid': id });
+  const user = await getOneUserByQuery({ _id: id });
 
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
@@ -71,7 +71,7 @@ const updateUser = async (id, userBody) => {
  * @returns { Promise <Object> }
  */
 const deleteUserById = async (id) => {
-  const user = await getOneUserByQuery({ '_id.$oid': id });
+  const user = await getOneUserByQuery({ _id: id });
 
   if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found.');
 

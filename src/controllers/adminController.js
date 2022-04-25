@@ -27,25 +27,29 @@ const createAccount = async (req, res) => {
 };
 
 const getAllAccount = async (req, res) => {
-  let { page, limit } = req.query;
+  try {
+    let { page, limit } = req.query;
 
-  if (page) {
-    page = parseInt(page);
-  } else {
-    page = 1;
+    if (page) {
+      page = parseInt(page);
+    } else {
+      page = 1;
+    }
+
+    if (limit) {
+      limit = parseInt(limit);
+    } else {
+      limit = 10;
+    }
+
+    const users = await userService.getAllUser();
+
+    const pagination = paginate(users, page, limit);
+
+    res.sendWrapped(null, httpStatus.OK, pagination);
+  } catch (error) {
+    res.sendWrapped(error.message, httpStatus.BAD_GATEWAY);
   }
-
-  if (limit) {
-    limit = parseInt(limit);
-  } else {
-    limit = 10;
-  }
-
-  const users = await userService.getAllUser();
-
-  const pagination = paginate(users, page, limit);
-
-  res.sendWrapped(null, httpStatus.OK, pagination);
 };
 
 module.exports = {

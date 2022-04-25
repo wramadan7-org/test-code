@@ -4,7 +4,7 @@ const bcrypt = require('../utils/hashing');
 
 const userService = require('../services/userService');
 
-const createUser = async (req, res) => {
+const createAccount = async (req, res) => {
   try {
     const userBody = req.body;
 
@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const getOwnProfile = async (req, res) => {
+const getOwnAccount = async (req, res) => {
   try {
     const { id } = req.user;
     const users = await userService.getOneUserByQuery({ _id: id });
@@ -37,7 +37,7 @@ const getOwnProfile = async (req, res) => {
   }
 };
 
-const updateOwnProfile = async (req, res) => {
+const updateOwnAccount = async (req, res) => {
   const { id, email, phoneNumber } = req.user;
   let userBody = req.body;
 
@@ -102,8 +102,19 @@ const updateOwnProfile = async (req, res) => {
   res.sendWrapped(user, httpStatus.OK);
 };
 
+const deleteOwnAccount = async (req, res) => {
+  const { id } = req.user;
+
+  const user = await userService.deleteUserById({ id });
+
+  if (!user) return res.sendWrapped('Fail to delete account', httpStatus.BAD_GATEWAY);
+
+  res.sendWrapped(user, httpStatus.OK);
+};
+
 module.exports = {
-  createUser,
-  getOwnProfile,
-  updateOwnProfile,
+  createAccount,
+  getOwnAccount,
+  updateOwnAccount,
+  deleteOwnAccount,
 };

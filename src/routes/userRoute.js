@@ -7,7 +7,7 @@ const { user } = require('../middlewares/validateRole');
 
 const userController = require('../controllers/userController');
 
-router.get('/', auth, user, userController.getOwnProfile);
-router.patch('/', auth, user, userController.updateOwnProfile);
+router.get('/', auth, user, userController.getOwnAccount);
+router.patch('/', auth, user, userController.updateOwnAccount);
 
 module.exports = router;

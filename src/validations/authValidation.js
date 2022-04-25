@@ -7,22 +7,20 @@ const register = {
       lastName: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().min(3).required(),
-      phoneNumber: Joi.string().min(12).max(14).pattern(/^\d+$/)
-        .required(),
     },
   ),
 };
 
 const login = {
-    body: Joi.object().keys(
-      {
-        email: Joi.string().email().required(),
-        password: Joi.string().min(3).required(),
-      },
-    ),
-  };
+  body: Joi.object().keys(
+    {
+      email: Joi.string().email().required(),
+      password: Joi.string().min(3).required(),
+    },
+  ),
+};
 
 module.exports = {
-    register,
-    login,
+  register,
+  login,
 };

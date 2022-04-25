@@ -70,7 +70,7 @@ Body:
 }
 ```
 
-## Api for User
+## API FOR USER
 ## Get own account
 
 Api for get own account:
@@ -109,7 +109,7 @@ Api for delete own account:
 DELETE => /v1/user
 ```
 
-## Api for admin
+## API FOR ADMIN
 
 ## Create account
 

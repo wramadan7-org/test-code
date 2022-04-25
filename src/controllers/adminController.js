@@ -71,84 +71,92 @@ const getAccountById = async (req, res) => {
 };
 
 const updateAccountById = async (req, res) => {
-  const { id } = req.params;
-  let userBody = req.body;
+  try {
+    const { id } = req.params;
+    let userBody = req.body;
 
-  const user = await userService.getOneUserByQuery({ _id: id });
+    const user = await userService.getOneUserByQuery({ _id: id });
 
-  if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
+    if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
 
-  let defaultEmail = user.email;
-  let defaultPhoneNumber = user.phoneNumber;
+    let defaultEmail = user.email;
+    let defaultPhoneNumber = user.phoneNumber;
 
-  // Check duplicate email
-  if (userBody.email) {
-    const availEmail = await userService.getManyUserByQuery(
-      {
-        $and: [
-          {
-            email: userBody.email,
-          },
-          {
-            email: {
-              $ne: user.email,
+    // Check duplicate email
+    if (userBody.email) {
+      const availEmail = await userService.getManyUserByQuery(
+        {
+          $and: [
+            {
+              email: userBody.email,
             },
-          },
-        ],
-      },
-    );
-
-    if (availEmail && availEmail.length > 0) return res.sendWrapped('Email already exists.', httpStatus.CONFLICT);
-
-    defaultEmail = userBody.email;
-  }
-
-  // Check duplicate phone number
-  if (userBody.phoneNumber) {
-    const availPhoneNumber = await userService.getManyUserByQuery(
-      {
-        $and: [
-          {
-            phoneNumber: userBody.phoneNumber,
-          },
-          {
-            phoneNumber: {
-              $ne: user.phoneNumber,
+            {
+              email: {
+                $ne: user.email,
+              },
             },
-          },
-        ],
-      },
-    );
+          ],
+        },
+      );
 
-    if (availPhoneNumber && availPhoneNumber.length > 0) return res.sendWrapped('Phone number already exists.', httpStatus.CONFLICT);
+      if (availEmail && availEmail.length > 0) return res.sendWrapped('Email already exists.', httpStatus.CONFLICT);
 
-    defaultPhoneNumber = userBody.phoneNumber;
+      defaultEmail = userBody.email;
+    }
+
+    // Check duplicate phone number
+    if (userBody.phoneNumber) {
+      const availPhoneNumber = await userService.getManyUserByQuery(
+        {
+          $and: [
+            {
+              phoneNumber: userBody.phoneNumber,
+            },
+            {
+              phoneNumber: {
+                $ne: user.phoneNumber,
+              },
+            },
+          ],
+        },
+      );
+
+      if (availPhoneNumber && availPhoneNumber.length > 0) return res.sendWrapped('Phone number already exists.', httpStatus.CONFLICT);
+
+      defaultPhoneNumber = userBody.phoneNumber;
+    }
+
+    let tempData = {
+      phoneNumber: defaultPhoneNumber,
+      email: defaultEmail,
+    };
+
+    Object.assign(userBody, tempData);
+
+    Object.assign(user, userBody);
+
+    const updateAccount = await userService.updateUser(id, userBody);
+
+    res.sendWrapped(updateAccount, httpStatus.OK);
+  } catch (error) {
+    res.sendWrapped(error.message, httpStatus.BAD_GATEWAY);
   }
-
-  let tempData = {
-    phoneNumber: defaultPhoneNumber,
-    email: defaultEmail,
-  };
-
-  Object.assign(userBody, tempData);
-
-  Object.assign(user, userBody);
-
-  const updateAccount = await userService.updateUser(id, userBody);
-
-  res.sendWrapped(updateAccount, httpStatus.OK);
 };
 
 const deleteAccountById = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const user = await userService.getOneUserByQuery({ _id: id });
+    const user = await userService.getOneUserByQuery({ _id: id });
 
-  if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
+    if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
 
-  const deleteAccount = await userService.deleteUserById(id);
+    const deleteAccount = await userService.deleteUserById(id);
 
-  res.sendWrapped(deleteAccount, httpStatus.OK);
+    res.sendWrapped(deleteAccount, httpStatus.OK);
+  } catch (error) {
+    res.sendWrapped(error.message, httpStatus.BAD_GATEWAY);
+  }
 };
 
 module.exports = {

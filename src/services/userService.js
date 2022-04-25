@@ -1,8 +1,3 @@
-const bcrypt = require('bcrypt');
-const httpStatus = require('http-status');
-
-const ApiError = require('../utils/ApiError');
-
 const User = require('../models/User');
 
 /**
@@ -22,7 +17,7 @@ const createUser = async (userBody) => {
  * @returns { Promise <Array> }
  */
 const getAllUser = async (query) => {
-  const users = await User.find(query);
+  const users = await User.find(query).sort({ createdAt: -1 });
 
   return users;
 };

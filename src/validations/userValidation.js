@@ -13,7 +13,6 @@ const updateOwnAccount = {
           address: Joi.string().default(null),
           religion: Joi.string().default('islam'),
           birthdate: Joi.date().default(null),
-          role: Joi.string().valid('admin', 'user').default('user'),
         },
       ),
     },

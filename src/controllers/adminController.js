@@ -9,6 +9,14 @@ const createAccount = async (req, res) => {
   try {
     const userBody = req.body;
 
+    const email = await userService.getOneUserByQuery({ email: userBody.email });
+
+    if (email) return res.sendWrapped('Email already exists.', httpStatus.CONFLICT);
+
+    const phone = await userService.getOneUserByQuery({ phoneNumber: userBody.phoneNumber });
+
+    if (phone) return res.sendWrapped('Phone number already exists.', httpStatus.CONFLICT);
+
     const hash = bcrypt(userBody.password, 10);
 
     const data = {

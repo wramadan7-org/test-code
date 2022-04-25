@@ -22,11 +22,13 @@ const userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
       required: false,
+      default: null,
     },
     detail: {
       address: {
         type: String,
         required: false,
+        default: null,
       },
       religion: {
         type: String,
@@ -36,10 +38,12 @@ const userSchema = new mongoose.Schema(
       birthdate: {
         type: Date,
         required: false,
+        default: null,
       },
       profile: {
         type: String,
         required: false,
+        default: null,
       },
       role: {
         type: String,

@@ -7,6 +7,7 @@ const { admin } = require('../middlewares/validateRole');
 
 const adminController = require('../controllers/adminController');
 
-router.get('/', auth, admin, adminController.getAllUser);
+router.post('/', auth, admin, adminController.createAccount);
+router.get('/', auth, admin, adminController.getAllAccount);
 
 module.exports = router;

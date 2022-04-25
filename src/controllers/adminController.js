@@ -26,7 +26,7 @@ const createAccount = async (req, res) => {
   }
 };
 
-const getAllUser = async (req, res) => {
+const getAllAccount = async (req, res) => {
   let { page, limit } = req.query;
 
   if (page) {
@@ -50,5 +50,5 @@ const getAllUser = async (req, res) => {
 
 module.exports = {
   createAccount,
-  getAllUser,
+  getAllAccount,
 };

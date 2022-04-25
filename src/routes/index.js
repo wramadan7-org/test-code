@@ -4,6 +4,7 @@ const router = express.Router();
 
 const authRoute = require('./authRoute');
 const userRoute = require('./userRoute');
+const adminRoute = require('./adminRoute');
 
 const defaultRoutes = [
   {
@@ -13,6 +14,10 @@ const defaultRoutes = [
   {
     path: '/user',
     route: userRoute,
+  },
+  {
+    path: '/admin',
+    route: adminRoute,
   },
 ];
 

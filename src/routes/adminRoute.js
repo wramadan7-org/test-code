@@ -11,5 +11,6 @@ router.post('/', auth, admin, adminController.createAccount);
 router.get('/', auth, admin, adminController.getAllAccount);
 router.get('/:id', auth, admin, adminController.getAccountById);
 router.patch('/:id', auth, admin, adminController.updateAccountById);
+router.delete('/:id', auth, admin, adminController.deleteAccountById);
 
 module.exports = router;

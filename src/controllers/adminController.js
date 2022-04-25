@@ -57,7 +57,7 @@ const getAccountById = async (req, res) => {
 
   const user = await userService.getOneUserByQuery({ _id: id });
 
-  if (!user) return res.sendWrapped('User no\t found.', httpStatus.NOT_FOUND);
+  if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
 
   res.sendWrapped(user, httpStatus.OK);
 };
@@ -68,7 +68,7 @@ const updateAccountById = async (req, res) => {
 
   const user = await userService.getOneUserByQuery({ _id: id });
 
-  if (!user) return res.sendWrapped('User no\t found.', httpStatus.NOT_FOUND);
+  if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
 
   let defaultEmail = user.email;
   let defaultPhoneNumber = user.phoneNumber;
@@ -131,9 +131,22 @@ const updateAccountById = async (req, res) => {
   res.sendWrapped(updateAccount, httpStatus.OK);
 };
 
+const deleteAccountById = async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getOneUserByQuery({ _id: id });
+
+  if (!user) return res.sendWrapped('User no\'t found.', httpStatus.NOT_FOUND);
+
+  const deleteAccount = await userService.deleteUserById(id);
+
+  res.sendWrapped(deleteAccount, httpStatus.OK);
+};
+
 module.exports = {
   createAccount,
   getAllAccount,
   getAccountById,
   updateAccountById,
+  deleteAccountById,
 };

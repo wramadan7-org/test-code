@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
 
     const user = await userService.createUser(data);
 
-    if (!user) throw new ApiError(httpStatus.BAD_REQUEST, 'Fail to create data');
+    if (!user) return res.sendWrapped('Fail to create data', httpStatus.BAD_GATEWAY);
 
     res.sendWrapped(user, httpStatus.OK);
   } catch (error) {
@@ -26,6 +26,18 @@ const createUser = async (req, res) => {
   }
 };
 
+const getOwnProfile = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const users = await userService.getOneUserByQuery({ _id: id });
+
+    res.sendWrapped(users, httpStatus.OK);
+  } catch (error) {
+    res.sendWrapped(error.message, httpStatus.BAD_GATEWAY);
+  }
+};
+
 module.exports = {
   createUser,
+  getOwnProfile,
 };

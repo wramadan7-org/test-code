@@ -52,7 +52,18 @@ const getAllAccount = async (req, res) => {
   }
 };
 
+const getAccountById = async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getOneUserByQuery({ _id: id });
+
+  if (!user) return res.sendWrapped('User no\t found.', httpStatus.NOT_FOUND);
+
+  res.sendWrapped(user, httpStatus.OK);
+};
+
 module.exports = {
   createAccount,
   getAllAccount,
+  getAccountById,
 };

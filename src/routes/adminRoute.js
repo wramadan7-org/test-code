@@ -9,5 +9,6 @@ const adminController = require('../controllers/adminController');
 
 router.post('/', auth, admin, adminController.createAccount);
 router.get('/', auth, admin, adminController.getAllAccount);
+router.get('/:id', auth, admin, adminController.getAccountById);
 
 module.exports = router;

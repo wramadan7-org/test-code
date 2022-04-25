@@ -18,10 +18,11 @@ const createUser = async (userBody) => {
 
 /**
  * Get all user
+ * @param query
  * @returns { Promise <Array> }
  */
-const getAllUser = async () => {
-  const users = await User.find();
+const getAllUser = async (query) => {
+  const users = await User.find(query);
 
   return users;
 };
